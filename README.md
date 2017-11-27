@@ -3,16 +3,15 @@
 ## 添加依赖
 
 ```
-	allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
-  
-  dependencies {
-	        compile 'com.github.Sjoner:khttp:{version}'
-	}
+allprojects {
+    repositories {
+        ...
+	maven { url 'https://jitpack.io' }
+    }
+}
+dependencies {
+    compile 'com.github.Sjoner:khttp:{version}'
+}
 
 ```
 
