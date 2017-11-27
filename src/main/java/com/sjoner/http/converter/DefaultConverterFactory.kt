@@ -3,7 +3,6 @@ package com.sjoner.http.converter
 import com.sjoner.http.builder
 import com.sjoner.http.requestConverter
 import com.sjoner.http.responseConverter
-import com.sjoner.http.stringConverter
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Converter

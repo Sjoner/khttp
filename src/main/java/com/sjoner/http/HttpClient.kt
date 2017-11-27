@@ -1,12 +1,7 @@
 package com.sjoner.http
 
-import com.sjoner.http.converter.DefaultConverterFactory
-import com.sjoner.http.converter.DefaultRequestConverter
-import com.sjoner.http.converter.DefaultResponseConverter
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import kotlin.properties.Delegates
 
@@ -40,14 +35,10 @@ open class HttpClient {
                         map.put(name,value)
                     }
                 }
-                call = server.get(url, map)
+                call = server.get(url, map,request.headers)
             }
             else ->{
-                if (body != null) {
-                    call = server.post(url, body)
-                } else {
-                    call = server.post(url)
-                }
+                call = server.post(url, body?:Any(),request.headers)
             }
         }
         return call
@@ -65,14 +56,4 @@ inline fun <F:Any,reified T:Any> http(init: Request<F,T>.() -> Unit){
     val simpleCall = SimpleCall<T>(T::class.java,call)
 
     request.enqueue(simpleCall)
-}
-
-inline fun initRetrofit(init: Retrofit.Builder.() -> Unit) {
-    val builder = Retrofit.Builder()
-    builder.requestConverter = DefaultRequestConverter()
-    builder.responseConverter = DefaultResponseConverter()
-    builder.init()
-    builder.addConverterFactory(DefaultConverterFactory())
-
-    HttpClient.instance().retrofit = createRetrofit(builder)
 }

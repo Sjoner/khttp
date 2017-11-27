@@ -6,12 +6,7 @@ import retrofit2.http.*
 
 interface IServer {
     @GET
-    fun get(@Url url: String, @QueryMap params: Map<String,String> = HashMap(), @HeaderMap headerMap: Map<String, String>): Call<ResponseBody>
-    @GET
-    fun get(@Url url: String, @QueryMap params: Map<String,String> = HashMap()): Call<ResponseBody>
+    fun get(@Url url: String, @QueryMap params: Map<String,String> = HashMap(), @HeaderMap headerMap: Map<String, String> = HashMap()): Call<ResponseBody>
     @POST
-    fun post(@Url url: String,@Body body: Any): Call<ResponseBody>
-    @POST
-    fun post(@Url url: String): Call<ResponseBody>
-
+    fun post(@Url url: String,@Body body: Any = Any(),@HeaderMap headerMap: Map<String, String> = HashMap()): Call<ResponseBody>
 }

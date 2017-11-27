@@ -2,9 +2,6 @@ package com.sjoner.http
 
 import com.sjoner.http.bean.KuaiDiQueryReq
 import com.sjoner.http.bean.QueryResp
-import com.sjoner.http.converter.DefaultResponseConverter
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -17,9 +14,7 @@ class Main{
 
         initRetrofit {
             baseUrl("http://www.kuaidi100.com")
-            var okClient = OkHttpClient.Builder()
-                    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).build()
-            client(okClient)
+            debug = true
         }
 
         http<KuaiDiQueryReq, QueryResp>{
@@ -29,16 +24,21 @@ class Main{
                 type = "yuantong"
                 postid = "11111111111"
             }
+            headers{
+                put("key","value")
+            }
             success{response ->
                 val responseBody = response?.body()
                 println("responseBody = ${responseBody?.message}")
             }
 
-            error{
+            error{t->
+                t?.printStackTrace()
             }
         }
 
         assertTrue(true)
     }
+
 }
 

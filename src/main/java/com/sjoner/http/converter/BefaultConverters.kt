@@ -7,7 +7,7 @@ import java.lang.reflect.Type
 
 fun converterString(value: Any):String{
     val fields = value.javaClass.declaredFields
-    val builder:StringBuilder = StringBuilder()
+    val builder = StringBuilder()
     val iterator = fields.iterator()
     while (iterator.hasNext()) {
         val field = iterator.next()
@@ -32,8 +32,8 @@ class DefaultRequestConverter: Converter<Any, RequestBody> {
     }
 }
 
-class DefaultResponseConverter: Converter<ResponseBody, Any> {
-    override fun convert(responseBody: ResponseBody, returnType: Type): Any {
-        return responseBody
+class DefaultResponseConverter: Converter<ResponseBody?, Any> {
+    override fun convert(responseBody: ResponseBody?, returnType: Type): Any {
+        return responseBody!!
     }
 }

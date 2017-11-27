@@ -9,7 +9,7 @@ class Request<F:Any,T:Any> {
     var url:String by Delegates.notNull()
     var method:HttpMethod = HttpMethod.GET
     var body: F? = null
-    var connectTimeout:Long = 10
+    var headers: HashMap<String, String> = HashMap()
 
     internal var _success: (Response<T>?) -> Unit = {}
 
@@ -47,5 +47,9 @@ class Request<F:Any,T:Any> {
                 _complete()
             }
         })
+    }
+
+    fun headers(init: HashMap<String, String>.() -> Unit) {
+        headers.init()
     }
 }
