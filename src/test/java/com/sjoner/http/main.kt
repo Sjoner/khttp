@@ -2,6 +2,7 @@ package com.sjoner.http
 
 import com.sjoner.http.bean.KuaiDiQueryReq
 import com.sjoner.http.bean.QueryResp
+import okhttp3.ResponseBody
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -17,26 +18,44 @@ class Main{
             debug = true
         }
 
-        http<KuaiDiQueryReq, QueryResp>{
+        http<HashMap<String,String>, ResponseBody>{
             url = "/query"
             method = HttpMethod.GET
             body = body {
-                type = "yuantong"
-                postid = "11111111111"
+                put("type","yuantong")
+                put("postid","11111111111")
             }
             headers{
                 put("key","value")
             }
             success{response ->
                 val responseBody = response?.body()
-                println("responseBody = ${responseBody?.message}")
+                println("responseBody = ${responseBody?.string()}")
             }
 
             error{t->
                 t?.printStackTrace()
             }
         }
-
+//        http<KuaiDiQueryReq, ResponseBody>{
+//            url = "/query"
+//            method = HttpMethod.GET
+//            body = body {
+//                type = "yuantong"
+//                postid = "11111111111"
+//            }
+//            headers{
+//                put("key","value")
+//            }
+//            success{response ->
+//                val responseBody = response?.body()
+//                println("responseBody = ${responseBody?.string()}")
+//            }
+//
+//            error{t->
+//                t?.printStackTrace()
+//            }
+//        }
         assertTrue(true)
     }
 

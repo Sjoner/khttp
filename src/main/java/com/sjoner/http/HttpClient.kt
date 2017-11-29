@@ -27,7 +27,11 @@ open class HttpClient {
         when (method) {
             HttpMethod.GET->{
                 var map = HashMap<String, String>()
-                if (body != null) {
+                if (body is Map<*, *>) {
+                    body.map {entry ->
+                        map.put(entry.key.toString(),entry.value.toString())
+                    }
+                }else if (body != null) {
                     var fields = body.javaClass.declaredFields
                     for (field in fields) {
                         var name = field.name
