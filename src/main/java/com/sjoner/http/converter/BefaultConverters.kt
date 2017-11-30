@@ -3,6 +3,7 @@ package com.sjoner.http.converter
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import java.lang.reflect.Modifier
 import java.lang.reflect.Type
 
 fun converterString(value: Any):String{
@@ -55,12 +56,15 @@ class DefaultQueryMapConverter:Converter<Any?,Map<String,String>>{
         }else if (body != null) {
             val fields = body.javaClass.declaredFields
             for (field in fields) {
+                if (Modifier.toString(field.modifiers).contains("static")) {
+                    continue
+                }
                 val isAccessible = field.isAccessible
                 field.isAccessible = true
                 val name = field.name
                 val value = field.get(body)
                 if (value != null) {
-                    map.put(name,value as String)
+                    map.put(name,value.toString())
                 }
                 field.isAccessible = isAccessible
             }
