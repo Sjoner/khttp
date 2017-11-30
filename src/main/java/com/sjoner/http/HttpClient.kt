@@ -26,28 +26,11 @@ open class HttpClient private constructor() {
         val body = request.body
         when (method) {
             HttpMethod.GET->{
-                var map = HashMap<String, String>()
-                if (body is Map<*, *>) {
-                    body.map {entry ->
-                        map.put(entry.key.toString(),entry.value.toString())
-                    }
-                }else if (body != null) {
-                    var fields = body.javaClass.declaredFields
-                    for (field in fields) {
-                        val isAccessible = field.isAccessible
-                        field.isAccessible = true
-                        val name = field.name
-                        val value = field.get(body)
-                        if (value != null) {
-                            map.put(name,value as String)
-                        }
-                        field.isAccessible = isAccessible
-                    }
-                }
+                var map = retrofit.builder.queryMapConverter.convert(body,HashMap<String,String>().javaClass)
                 call = server.get(url, map,request.headers)
             }
             else ->{
-                call = server.post(url, body?:Any(),request.headers)
+                call = server.post(url, body,request.headers)
             }
         }
         return call

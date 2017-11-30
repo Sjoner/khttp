@@ -1,9 +1,6 @@
 package com.sjoner.http
 
-import com.sjoner.http.converter.Converter
-import com.sjoner.http.converter.DefaultConverterFactory
-import com.sjoner.http.converter.DefaultRequestConverter
-import com.sjoner.http.converter.DefaultResponseConverter
+import com.sjoner.http.converter.*
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -16,7 +13,9 @@ var Retrofit.builder:Retrofit.Builder by Delegates.notNull()
 
 var Retrofit.Builder.responseConverter: Converter<ResponseBody?, Any> by Delegates.notNull()
 
-var Retrofit.Builder.requestConverter:Converter<Any,RequestBody> by Delegates.notNull()
+var Retrofit.Builder.requestConverter:Converter<Any?,RequestBody> by Delegates.notNull()
+
+var Retrofit.Builder.queryMapConverter:Converter<Any?,Map<String,String>> by Delegates.notNull()
 
 var Retrofit.Builder.debug:Boolean by Delegates.notNull()
 
@@ -52,6 +51,7 @@ inline fun initRetrofit(init: Retrofit.Builder.() -> Unit) {
     builder.debug = true
     builder.requestConverter = DefaultRequestConverter()
     builder.responseConverter = DefaultResponseConverter()
+    builder.queryMapConverter = DefaultQueryMapConverter()
     builder.okBuilder = OkHttpClient.Builder()
 
     builder.logger {message ->

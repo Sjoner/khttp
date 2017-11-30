@@ -44,7 +44,7 @@ artifacts {
     archives javadocJar
 }
 
-// To specify a license in the pom:
+// To specify a license in the pom
 install {
     repositories.mavenInstaller {
         pom.project {
@@ -60,7 +60,7 @@ install {
 }
 
 buildscript {
-    ext.kotlin_version = '1.1.4-3' // 版本号 , 可自行查阅文档修改为最新版本
+    ext.kotlin_version = '1.2.0' // 版本号 , 可自行查阅文档修改为最新版本
     repositories {
         jcenter()
         mavenCentral()

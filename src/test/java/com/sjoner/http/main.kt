@@ -15,6 +15,7 @@ class Main{
 
         initRetrofit {
             baseUrl("http://www.kuaidi100.com")
+            queryMapConverter
             debug = true
         }
 //
