@@ -37,8 +37,10 @@ open class HttpClient private constructor() {
                         val isAccessible = field.isAccessible
                         field.isAccessible = true
                         val name = field.name
-                        val value = field.get(body) as String
-                        map.put(name,value)
+                        val value = field.get(body)
+                        if (value != null) {
+                            map.put(name,value as String)
+                        }
                         field.isAccessible = isAccessible
                     }
                 }
