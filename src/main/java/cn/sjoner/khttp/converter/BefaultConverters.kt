@@ -1,4 +1,4 @@
-package com.sjoner.http.converter
+package cn.sjoner.khttp.converter
 
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -43,7 +43,7 @@ class DefaultResponseConverter: Converter<ResponseBody?, Any> {
     }
 }
 
-class DefaultQueryMapConverter:Converter<Any?,Map<String,String>>{
+class DefaultQueryMapConverter: Converter<Any?, Map<String, String>> {
     override fun convert(body: Any?, returnType: Type): Map<String, String> {
         val map = HashMap<String, String>()
         if (body is Map<*, *>) {

@@ -34,7 +34,7 @@ javadoc{
         charSet 'UTF-8'
         author true
         version true
-        links "http://docs.oracle.com/javase/7/docs/api"
+        links "khttp://docs.oracle.com/javase/7/docs/api"
     }
     failOnError = false
 }
@@ -51,7 +51,7 @@ install {
             licenses {
                 license {
                     name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    url 'khttp://www.apache.org/licenses/LICENSE-2.0.txt'
                     distribution 'repo'
                 }
             }

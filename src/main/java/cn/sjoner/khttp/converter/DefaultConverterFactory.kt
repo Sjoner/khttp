@@ -1,8 +1,8 @@
-package com.sjoner.http.converter
+package cn.sjoner.khttp.converter
 
-import com.sjoner.http.builder
-import com.sjoner.http.requestConverter
-import com.sjoner.http.responseConverter
+import cn.sjoner.khttp.builder
+import cn.sjoner.khttp.requestConverter
+import cn.sjoner.khttp.responseConverter
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Converter

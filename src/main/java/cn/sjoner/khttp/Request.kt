@@ -1,4 +1,4 @@
-package com.sjoner.http
+package cn.sjoner.khttp
 
 import retrofit2.Call
 import retrofit2.Callback
@@ -7,7 +7,7 @@ import kotlin.properties.Delegates
 
 class Request<F:Any,T:Any> {
     var url:String by Delegates.notNull()
-    var method:HttpMethod = HttpMethod.GET
+    var method: HttpMethod = HttpMethod.GET
     var body: F? = null
     var headers: HashMap<String, String> = HashMap()
 

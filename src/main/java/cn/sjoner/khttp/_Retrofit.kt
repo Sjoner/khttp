@@ -1,6 +1,6 @@
-package com.sjoner.http
+package cn.sjoner.khttp
 
-import com.sjoner.http.converter.*
+import cn.sjoner.khttp.converter.*
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -13,9 +13,9 @@ var Retrofit.builder:Retrofit.Builder by Delegates.notNull()
 
 var Retrofit.Builder.responseConverter: Converter<ResponseBody?, Any> by Delegates.notNull()
 
-var Retrofit.Builder.requestConverter:Converter<Any?,RequestBody> by Delegates.notNull()
+var Retrofit.Builder.requestConverter: Converter<Any?, RequestBody> by Delegates.notNull()
 
-var Retrofit.Builder.queryMapConverter:Converter<Any?,Map<String,String>> by Delegates.notNull()
+var Retrofit.Builder.queryMapConverter: Converter<Any?, Map<String, String>> by Delegates.notNull()
 
 var Retrofit.Builder.debug:Boolean by Delegates.notNull()
 

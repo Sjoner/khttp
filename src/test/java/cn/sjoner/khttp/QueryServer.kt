@@ -1,6 +1,6 @@
-package com.sjoner.http
+package cn.sjoner.khttp
 
-import com.sjoner.http.bean.KuaiDiQueryReq
+import cn.sjoner.khttp.bean.KuaiDiQueryReq
 import retrofit2.Call
 import retrofit2.http.GET
 

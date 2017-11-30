@@ -1,4 +1,4 @@
-package com.sjoner.http.bean
+package cn.sjoner.khttp.bean
 
 class KuaiDiQueryReq {
     lateinit var type:String

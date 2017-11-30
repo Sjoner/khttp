@@ -1,4 +1,4 @@
-package com.sjoner.http
+package cn.sjoner.khttp
 
 import okhttp3.Request
 import okhttp3.ResponseBody
@@ -16,7 +16,7 @@ class SimpleCall<T>:Call<T> {
     }
 
     override fun clone(): Call<T> {
-        return SimpleCall(returnType,call)
+        return SimpleCall(returnType, call)
     }
 
     override fun isCanceled(): Boolean {
