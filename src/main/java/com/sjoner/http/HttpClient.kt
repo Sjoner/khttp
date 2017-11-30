@@ -5,9 +5,9 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import kotlin.properties.Delegates
 
-open class HttpClient {
+open class HttpClient private constructor() {
     var retrofit:Retrofit by Delegates.notNull()
-    private constructor()
+
     companion object {
         private var instance:HttpClient?=null
         fun instance():HttpClient{
@@ -19,11 +19,11 @@ open class HttpClient {
     }
 
     fun <F:Any,T:Any>createCall(request: Request<F,T>):Call<ResponseBody>{
-        var server = retrofit.create(IServer::class.java)
+        val server = retrofit.create(IServer::class.java)
         var call: Call<ResponseBody>? = null
-        var url = request.url
-        var method = request.method
-        var body = request.body
+        val url = request.url
+        val method = request.method
+        val body = request.body
         when (method) {
             HttpMethod.GET->{
                 var map = HashMap<String, String>()
@@ -34,9 +34,12 @@ open class HttpClient {
                 }else if (body != null) {
                     var fields = body.javaClass.declaredFields
                     for (field in fields) {
-                        var name = field.name
-                        var value = field.get(body) as String
+                        val isAccessible = field.isAccessible
+                        field.isAccessible = true
+                        val name = field.name
+                        val value = field.get(body) as String
                         map.put(name,value)
+                        field.isAccessible = isAccessible
                     }
                 }
                 call = server.get(url, map,request.headers)
