@@ -10,7 +10,7 @@ allprojects {
     }
 }
 dependencies {
-    compile 'com.github.Sjoner:khttp:{version}'
+    compile 'com.github.sjoner:khttp:{version}'
 }
 
 ```
