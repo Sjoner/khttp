@@ -60,7 +60,7 @@ inline fun initRetrofit(init: Retrofit.Builder.() -> Unit) {
     builder.init()
 
     if (builder.debug) {
-        var interceptor = HttpLoggingInterceptor(builder.logger()).setLevel(HttpLoggingInterceptor.Level.BODY)
+        val interceptor = HttpLoggingInterceptor(builder.logger()).setLevel(HttpLoggingInterceptor.Level.BODY)
         builder.okBuilder {
             addInterceptor(interceptor)
         }

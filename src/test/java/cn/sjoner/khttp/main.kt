@@ -2,12 +2,12 @@ package cn.sjoner.khttp
 
 import cn.sjoner.khttp.bean.KuaiDiQueryReq
 import okhttp3.ResponseBody
-import org.junit.Assert.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import retrofit2.Response
 
 /**
- * Created by linmq on 17-11-22.
+ * Created on 17-11-22.
  */
 
 class Main{
@@ -17,21 +17,6 @@ class Main{
             baseUrl("http://www.kuaidi100.com")
             debug = true
         }
-//
-//        val response = testHttp<HashMap<String, String>, ResponseBody> {
-//            url = "/query"
-//            method = HttpMethod.GET
-//            body = body {
-//                put("type", "yuantong")
-//                put("postid", "11111111111")
-//            }
-//            headers {
-//                put("key", "value")
-//            }
-//        }
-//        val responseBody = response?.body()
-//        println("responseBody = ${responseBody?.string()}")
-
 
         val response = testHttp<KuaiDiQueryReq, ResponseBody> {
             url = "/query"
@@ -47,9 +32,8 @@ class Main{
         val responseBody = response.body()
         println("responseBody = ${responseBody?.string()}")
 
-        assertTrue(true)
+        assertEquals(4,2+2)
     }
-
 }
 
 
@@ -61,6 +45,5 @@ inline fun <F:Any,reified T:Any> testHttp(init: Request<F, T>.() -> Unit): Respo
 
     val client = HttpClient.instance()
     val call = client.createCall(request)
-    val simpleCall = SimpleCall<T>(T::class.java, call)
-    return simpleCall.execute()
+    return call.execute()
 }

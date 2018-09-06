@@ -1,7 +1,6 @@
 package cn.sjoner.khttp
 
-import okhttp3.ResponseBody
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import kotlin.properties.Delegates
 
@@ -18,34 +17,37 @@ open class HttpClient private constructor() {
         }
     }
 
-    fun <F:Any,T:Any>createCall(request: Request<F, T>):Call<ResponseBody>{
+    inline fun <F:Any,reified T:Any> createCall(request: Request<F, T>):SimpleCall<T>{
         val server = retrofit.create(IServer::class.java)
-        var call: Call<ResponseBody>? = null
         val url = request.url
         val method = request.method
         val body = request.body
-        when (method) {
+        return when (method) {
             HttpMethod.GET ->{
-                var map = retrofit.builder.queryMapConverter.convert(body,HashMap<String,String>().javaClass)
-                call = server.get(url, map,request.headers)
+                val map = retrofit.builder.queryMapConverter.convert(body,HashMap<String,String>().javaClass)
+                val call = server.get(url, map,request.headers)
+                SimpleCall(T::class.java,call,request)
             }
             else ->{
-                call = server.post(url, body,request.headers)
+                val call = server.post(url, body,request.headers)
+                SimpleCall(T::class.java,call,request)
             }
         }
-        return call
     }
 }
 
 inline fun <F:Any,reified T:Any> http(init: Request<F, T>.() -> Unit){
-
     val request = Request<F, T>()
-
     request.init()
-
     val client = HttpClient.instance()
     val call = client.createCall(request)
-    val simpleCall = SimpleCall<T>(T::class.java, call)
+    call.enqueue()
+}
 
-    request.enqueue(simpleCall)
+inline fun <F:Any,reified T:Any> syncHttp(init:Request<F,T>.()->Unit):Response<T>{
+    val request = Request<F, T>()
+    request.init()
+    val client = HttpClient.instance()
+    val call = client.createCall(request)
+    return call.execute()
 }

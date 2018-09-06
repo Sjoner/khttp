@@ -18,13 +18,9 @@ class Request<F:Any,T:Any> {
     internal var _complete:()->Unit = {}
 
     inline fun <reified T:Any> body(init: T.() -> Unit):T{
-        var data = T::class.java.newInstance()
+        val data = T::class.java.newInstance()
         data.init()
         return data
-    }
-
-    fun success(onSuccess: (Response<T>?) -> Unit) {
-        _success = onSuccess
     }
 
     fun error(onError: (Throwable?) -> Unit) {
@@ -33,6 +29,10 @@ class Request<F:Any,T:Any> {
 
     fun complete(onComplete:()->Unit) {
         _complete = onComplete
+    }
+
+    fun success(onSuccess: (Response<T>?) -> Unit) {
+        _success = onSuccess
     }
 
     fun enqueue(call: SimpleCall<T>) {

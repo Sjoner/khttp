@@ -7,16 +7,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.reflect.Type
 
-class SimpleCall<T>:Call<T> {
-    var call:Call<ResponseBody>
-    var returnType:Type
-    constructor(type: Type, call: Call<ResponseBody>) {
-        this.call = call
-        this.returnType = type
-    }
-
+class SimpleCall<T:Any>(private val returnType: Type,private val  call: Call<ResponseBody>,private val info: cn.sjoner.khttp.Request<*, T>):Call<T> {
     override fun clone(): Call<T> {
-        return SimpleCall(returnType, call)
+        return SimpleCall(returnType, call,info)
     }
 
     override fun isCanceled(): Boolean {
@@ -35,39 +28,49 @@ class SimpleCall<T>:Call<T> {
         return call.request()
     }
 
+    fun enqueue(){
+        enqueue(object :Callback<T>{
+            override fun onFailure(call: Call<T>?, t: Throwable?) {
+                info._fail(t)
+                info._complete()
+            }
+
+            override fun onResponse(call: Call<T>?, response: Response<T>?) {
+                info._success(response)
+                info._complete()
+            }
+        })
+    }
+
     override fun enqueue(callback: Callback<T>) {
-        var cback = object : Callback<ResponseBody>{
+        val back = object : Callback<ResponseBody>{
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
                 callback.onFailure(this@SimpleCall,t)
             }
 
             override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
-                var converter = HttpClient.instance().retrofit.builder.responseConverter
-                var returnResp:Response<Any>?=null
-                if (response.isSuccessful) {
-                    var body = converter.convert(response.body(),returnType)
-                    returnResp = Response.success(body, response.raw())
+                val converter = HttpClient.instance().retrofit.builder.responseConverter
+                val returnResp = if (response.isSuccessful) {
+                    val body = converter.convert(response.body(),returnType)
+                    Response.success(body, response.raw())
                 }else{
-                    var errorBody = response.errorBody()
-                    returnResp = Response.error(response.code(),errorBody)
+                    response
                 }
                 callback.onResponse(this@SimpleCall,returnResp as Response<T>)
             }
 
         }
-        call.enqueue(cback)
+        call.enqueue(back)
     }
 
     override fun execute(): Response<T> {
-        var response = call.execute()
-        var converter = HttpClient.instance().retrofit.builder.responseConverter
-        var returnResp:Response<Any>?=null
-        if (response.isSuccessful) {
-            var body = converter.convert(response.body(),returnType)
-            returnResp = Response.success(body, response.raw())
+        val response = call.execute()
+        val converter = HttpClient.instance().retrofit.builder.responseConverter
+        val returnResp = if (response.isSuccessful) {
+            val body = converter.convert(response.body(),returnType)
+            Response.success(body, response.raw())
         }else{
-            var errorBody = response.errorBody()
-            returnResp = Response.error(response.code(),errorBody)
+            response
         }
         return returnResp as Response<T>
     }
